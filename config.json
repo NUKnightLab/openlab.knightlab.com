@@ -1,0 +1,4 @@
+{
+    "copyDir": "./src/data/copy",
+    "publicSpreadsheetURL": "http://foo.com"
+}
