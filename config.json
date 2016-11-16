@@ -1,4 +1,5 @@
 {
-    "copyDir": "./src/data/copy",
-    "publicSpreadsheetURL": "http://foo.com"
+    "copyFile": "./src/data/copy/copy.json",
+    "yamlFile": "./src/data/data.yml",
+    "publicSpreadsheetURL": "https://docs.google.com/spreadsheets/d/14AioGTfHHIRz-u3zoJJeqXq0B66yyq72BCZFXccOhhw/pubhtml"
 }

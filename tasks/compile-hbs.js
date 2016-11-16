@@ -6,19 +6,28 @@ var _ = require('lodash'),
     Handlebars = require('handlebars'),
     globby = require('globby'),
     debug = require('./helpers/debug-hbs.js'),
-    helper = require('./helpers/partial-builder.js');
-    copy = require('./helpers/update-copy.js');
-
-data = getData('src/data/data.yml');
-copy = copy.updateCopy();
+    helper = require('./helpers/partial-builder.js')
+    config = require('./../config')
+    jsonfile = require('jsonfile');
 
 //run Helpers
 helper.getPartial(Handlebars, 'src/templates/partials/');
+var data = getData(config.yamlFile, config.copyFile);
 
-function getData(file) {
+function getYamlData(file) {
     fileName = path.basename(file, '.yml');
-
     return yml.load(file);
+}
+
+function getCopyData(file) {
+    return jsonfile.readFileSync(file)
+}
+
+function getData(yamlFile, copyFile) {
+    return {
+        data: getYamlData(yamlFile),
+        talks: getCopyData(copyFile).talks
+    }
 }
 
 function renderTemplate(templatePath, data) {
@@ -39,7 +48,7 @@ function renderPage(template, layout, data) {
   return page(context);
 }
 
-function build() {
+function build(data) {
   var hbsTemplates = globby.sync('src/templates/**/*.hbs');
 
   _.forEach(hbsTemplates, function(file, i) {
@@ -54,7 +63,6 @@ function build() {
       fs.outputFileSync(`dist/${fileName}.html`, page, 'utf8');
     }
   });
-
 }
 
-build();
+build(data);
