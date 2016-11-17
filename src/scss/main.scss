@@ -1,1 +1,8 @@
 @import '../../../orangeline/src/scss/orangeline';
+
+.border-rounded {
+    border-radius: 3%;
+}
+.border {
+    border: $color-primary--light solid 1px;
+}

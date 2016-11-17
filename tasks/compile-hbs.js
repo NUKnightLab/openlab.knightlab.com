@@ -8,26 +8,14 @@ var _ = require('lodash'),
     debug = require('./helpers/debug-hbs.js'),
     helper = require('./helpers/partial-builder.js')
     config = require('./../config')
-    jsonfile = require('jsonfile');
 
 //run Helpers
 helper.getPartial(Handlebars, 'src/templates/partials/');
-var data = getData(config.yamlFile, config.copyFile);
+var data = getData(config.copyFile);
 
-function getYamlData(file) {
+function getData(file) {
     fileName = path.basename(file, '.yml');
     return yml.load(file);
-}
-
-function getCopyData(file) {
-    return jsonfile.readFileSync(file)
-}
-
-function getData(yamlFile, copyFile) {
-    return {
-        data: getYamlData(yamlFile),
-        talks: getCopyData(copyFile).talks
-    }
 }
 
 function renderTemplate(templatePath, data) {
