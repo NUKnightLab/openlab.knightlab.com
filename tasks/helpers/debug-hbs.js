@@ -7,7 +7,7 @@ Handlebars.registerHelper('debug', function(opt) {
     console.log("Current Context");
     console.log("====================");
     console.log(this);
-         
+
     if (opt) {
       console.log("Value");
       console.log("====================");
