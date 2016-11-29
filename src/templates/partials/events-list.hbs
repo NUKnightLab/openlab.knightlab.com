@@ -1,0 +1,23 @@
+
+{{#if thisWeekEvents}}
+<h3>This Week at Knight Lab</h3>
+{{#each thisWeekEvents}}{{> event this}}{{/each}}
+{{/if}}
+
+<p class="time-meta"><small class="text-color-grey--light text-fontFamily-sansSerif">All event times are in Central Time</small><p>
+
+{{#if upcomingEvents}}
+<h3>The Future</h3>
+{{#each upcomingEvents}}{{> event this}}{{/each}}
+{{/if}}
+
+
+{{#if archivedEvents}}
+<div class="archives">
+    <div id="show-archives-btn" class="button button-complement button-full-width">View Archived Events</div>
+    <div id="archives-list">
+        <h3>The Past</h3>
+        {{#each archivedEvents}}{{> event this}}{{/each}}
+    </div>
+</div>
+{{/if}}

@@ -3,17 +3,21 @@
 ---
 {{> header }}
 
-<div id="lightning-talk-archive"></div>
-
 <div class="container">
-    <div class="grid grid-size-2">
-        {{#each talks}}
-        <div class="grid-cell fill-color-primary--light border-rounded">
-            <h3>{{topic}}</h4>
+    <div class="grid">
+        <div id="events-list" class="column-7"></div>
+        <div id="info" class="column-5">
+            <div class="display-panel">
+                <img class="rounded" src="http://placekitten.com/600/400" alt="">
+                <p>About knight lab community Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exe</p>
+                <a href="bit.ly/knightlab-students" class="button button-primary button-full-width">Sign up for our email list</a>
+                <p><small>Text here on why you should sign up for the emails Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small></p>
+            </div>
         </div>
-        {{/each}}
     </div>
+
+
+    <div id="lightning-talks-archive"></div>
+
 </div>
-
-
 {{> footer }}

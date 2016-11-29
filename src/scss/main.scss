@@ -1,8 +1,55 @@
+$spacing-gutter: 2rem;
 @import '../../../orangeline/src/scss/orangeline';
 
-.border-rounded {
-    border-radius: 3%;
+.rounded {
+    border-radius: $border-radius;
 }
-.border {
-    border: $color-primary--light solid 1px;
+
+.container {
+    margin-top: 4em;
+}
+
+.button {
+    margin-left: 0 !important; margin-right: 0 !important;
+}
+
+p {
+    font-size: .875rem;
+}
+
+.event {
+    display: flex;
+    margin-top: 2em;
+
+    .emoji {
+        padding-right: 0.5rem;
+        font-size: 1.125em;
+        span { vertical-align: text-bottom; }
+    }
+
+    h5, h6 { margin-top: 0; }
+
+    .button {
+        display: inline-block;
+        min-width: 50%;
+        margin-bottom: 1rem;
+    }
+}
+
+.time-meta { 
+    margin-top: 2em;
+    text-align: center; 
+}
+
+.archives {
+    margin-top: 4em;
+    #archives-list { display: none; }
+}
+
+#lightning-talks-archive {
+    #lightning-talks-list { display: none; }
+}
+
+.footer-knightlab {
+    margin-top: 10em;
 }

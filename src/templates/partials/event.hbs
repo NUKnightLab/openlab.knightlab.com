@@ -1,0 +1,9 @@
+<div class="event">
+    {{#if emoji}}<h5 class="emoji"><span>{{{emoji}}}</span></h5>{{/if}}
+    <div class="info">
+        <h5> {{#if meta.type}}{{meta.type}}: {{/if}}<span>{{name}}</span></h5>
+        <h6>{{datetimeString}}{{#if location}} | {{location}}{{/if}}</h6>
+        <p>{{{description}}}</p>
+        {{#if buttonLink}}<a target="_blank" class="button button-light button-small" href="{{buttonLink}}">{{buttonText}}</a>{{/if}}
+    </div>
+</div>

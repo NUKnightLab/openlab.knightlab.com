@@ -1,0 +1,15 @@
+<div class="grid">
+    <div class="column-7">
+        <div id="show-ligtning-talks-btn" class="button button-tetrad button-full-width">Check out all the Lightning Talks</div>
+    </div>
+    <div class="column-5"></div>
+</div>
+<div class="grid" id="lightning-talks-list">
+    {{#each elements}}
+    <div class="grid-cell">
+        <h5>{{topic}}</h5>
+        <p>{{description}}</p>
+        <h6><a href="https://twitter.com/{{twitterHandle}}">{{name}}</a></h6>
+    </div>
+    {{/each}}
+</div>
