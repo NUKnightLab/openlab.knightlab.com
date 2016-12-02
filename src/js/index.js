@@ -3,7 +3,6 @@ var Tabletop = require('tabletop');
 var _ = require('lodash');
 var moment = require('moment');
 
-
 // Set up DOM Elements
 var eventsListDOM = document.querySelector('#events-list');
 var lightningTalksArchiveDOM = document.querySelector('#lightning-talks-archive');
@@ -13,15 +12,16 @@ var eventsListTemplate = require("./../templates/partials/events-list.hbs");
 var lightningTalksTemplate = require("./../templates/partials/lightning-talks-archive.hbs");
 
 // Set up global variables
-publicSpreadsheetURL= "https://docs.google.com/spreadsheets/d/14AioGTfHHIRz-u3zoJJeqXq0B66yyq72BCZFXccOhhw/pubhtml";
+var moment = require('moment');
+var publicSpreadsheetURL= "https://docs.google.com/spreadsheets/d/14AioGTfHHIRz-u3zoJJeqXq0B66yyq72BCZFXccOhhw/pubhtml";
 var copy = false;
+var staticCopy = require('json-loader!../data/static-copy.json');
 
 // Initialize the code by starting Tabletop
 Tabletop.init({key: publicSpreadsheetURL, callback: onLoad});
 
 function onLoad(data, tabletop) {
     copy = data;
-    copy.info = processKeyValueSheet(data.info.elements);
     copy.events = processEventsSheet(data.events.elements);
     updateDOM();
 }
@@ -30,14 +30,6 @@ function updateDOM() {
     eventsListDOM.innerHTML = eventsListTemplate(copy.events);
     lightningTalksArchiveDOM.innerHTML = lightningTalksTemplate(copy["lightning-talks-archive"]);
     enableButtons();
-}
-
-function processKeyValueSheet(sheet) {
-    var newSheet = {};
-    for (var i = 0; i < sheet.length; i++) {
-        newSheet[sheet[i].key] = sheet[i].value;
-    }
-    return newSheet;
 }
 
 function processEventsSheet(sheet) {
@@ -63,7 +55,7 @@ function processEventsSheet(sheet) {
 
 function attatchEventMetadata(evt) {
     evt.meta = false;
-    for (let eventType of copy['event-types'].elements) {
+    for (let eventType of staticCopy.eventTypes) {
         if (evt.type == eventType.slug) { evt.meta = eventType; }
 
         if (evt.customEmoji) { 
