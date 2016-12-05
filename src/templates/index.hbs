@@ -1,22 +1,29 @@
 ---
 
 ---
+{{> nav}}
 {{> header }}
 <div class="container">
     <div class="grid">
-        <div id="events-list" class="column-7"></div>
-        <div id="info" class="column-5">
+        <div id="intro" class="column-6">
+            <p class="lead">Five or six words here as intro</p>
+            <p>More words here Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</p>
+            <a href="bit.ly/knightlab-students" class="button button-primary button-full-width">Sign up for our email list</a>
+            <p><small>Text here on why you should sign up for the emails Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small></p>
+        </div>
+        <div id="upcoming-events" class="column-6">
             <div class="display-panel">
-                <img class="rounded" src="http://placekitten.com/600/400" alt="">
-                <p>About knight lab community Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exe</p>
-                <a href="bit.ly/knightlab-students" class="button button-primary button-full-width">Sign up for our email list</a>
-                <p><small>Text here on why you should sign up for the emails Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small></p>
+                <h4>Upcoming Events</h4>
+                <div id="upcoming-events-panel"></div>
             </div>
         </div>
     </div>
 
+    <div class="grid grid-flex-start">
+        <div id="events-list-full" class="column-9"></div>
+    </div>
 
-    <div id="lightning-talks-archive"></div>
+    {{!-- <div id="lightning-talks-archive"></div> --}}
 
 </div>
 {{> footer }}

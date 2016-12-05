@@ -17,7 +17,11 @@ p {
     font-size: .875rem;
 }
 
-.event {
+#upcoming-events h4 {
+    margin-top: 0;
+}
+
+.event.event-full {
     display: flex;
     margin-top: 2em;
 
@@ -36,14 +40,36 @@ p {
     }
 }
 
-.time-meta { 
+.event.event-small {
+    display: flex;
+    margin-top: 1em;
+    text-decoration: none;
+    background: none;
+    .emoji {
+        padding-right: 0.5rem;
+        font-size: 1.125em;
+        span { vertical-align: text-bottom; }
+        text-shadow: none;
+    }
+
+    h6, p { margin-top: 0; }
+    p { margin-bottom: 0; }
+    h6 { margin-bottom: 0.25rem; }
+}
+
+
+.time-meta {
     margin-top: 2em;
-    text-align: center; 
+    text-align: center;
 }
 
 .archives {
     margin-top: 4em;
     #archives-list { display: none; }
+}
+
+.grid-flex-start {
+    justify-content: flex-start;
 }
 
 #lightning-talks-archive {

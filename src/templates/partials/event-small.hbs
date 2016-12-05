@@ -1,0 +1,8 @@
+<a href="#{{slug}}" class="event event-small">
+        {{#if emoji}}<h6 class="strong emoji"><span>{{{emoji}}}</span></h6>{{/if}}
+        <div class="info text-fontFamily-sansSerif">
+            <h6>{{#if meta.type}}{{meta.type}}: {{/if}}<span>{{name}}</span></strong></h6>
+            <p>{{datetimeString}}{{#if location}} | {{location}}{{/if}}</p>
+        </div>
+    </a>
+</a>

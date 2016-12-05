@@ -57,36 +57,45 @@
 	var moment = __webpack_require__(8);
 
 	// Set up DOM Elements
-	var eventsListDOM = document.querySelector('#events-list');
+	var upcomingEventsPanelDOM = document.querySelector('#upcoming-events-panel');
+	var eventsListFullDOM = document.querySelector('#events-list-full');
 	var lightningTalksArchiveDOM = document.querySelector('#lightning-talks-archive');
 
 	// Load Handlebars partials
-	var eventsListTemplate = __webpack_require__(119);
-	var lightningTalksTemplate = __webpack_require__(140);
+	var upcomingEventsPanelTemplate = __webpack_require__(119);
+	var eventsListFullTemplate = __webpack_require__(140);
+	var lightningTalksTemplate = __webpack_require__(142);
 
 	// Set up global variables
 	var moment = __webpack_require__(8);
 	var publicSpreadsheetURL= "https://docs.google.com/spreadsheets/d/14AioGTfHHIRz-u3zoJJeqXq0B66yyq72BCZFXccOhhw/pubhtml";
 	var copy = false;
-	var staticCopy = __webpack_require__(141);
+	var staticCopy = __webpack_require__(143);
 
 	// Initialize the code by starting Tabletop
+	console.time("tabletop");
 	Tabletop.init({key: publicSpreadsheetURL, callback: onLoad});
 
 	function onLoad(data, tabletop) {
+	    console.timeEnd("tabletop");
+	    console.time("process");
 	    copy = data;
 	    copy.events = processEventsSheet(data.events.elements);
+	    console.timeEnd("process");
 	    updateDOM();
 	}
 
 	function updateDOM() {
-	    eventsListDOM.innerHTML = eventsListTemplate(copy.events);
-	    lightningTalksArchiveDOM.innerHTML = lightningTalksTemplate(copy["lightning-talks-archive"]);
+	    console.time("render");
+	    upcomingEventsPanelDOM.innerHTML = upcomingEventsPanelTemplate(copy.events);
+	    eventsListFullDOM.innerHTML = eventsListFullTemplate(copy.events);
+	    console.timeEnd("render");
+	    // lightningTalksArchiveDOM.innerHTML = lightningTalksTemplate(copy["lightning-talks-archive"]);
 	    enableButtons();
 	}
 
 	function processEventsSheet(sheet) {
-	    newEventsSheet = {thisWeekEvents: [], upcomingEvents: [], archivedEvents: []};
+	    newEventsSheet = {thisWeekEvents: [], upcomingEvents: [], archivedEvents: [], nextThreeEvents: []};
 
 	    for (let event of sheet) {
 	        var newEvent = event;
@@ -94,15 +103,23 @@
 	        attatchEventMetadata(newEvent);
 	        processEventDateTime(newEvent);
 	        newEvent.datetimeString = createEventDateTimeString(newEvent);
-	        
-	        if (newEvent.thisWeek) { 
-	            newEventsSheet.thisWeekEvents.push(newEvent); 
+	        newEvent.slug = slugifyEvent(newEvent);
+
+	        if (newEvent.thisWeek) {
+	            newEventsSheet.thisWeekEvents.push(newEvent);
 	        } else if (newEvent.archived) {
 	            newEventsSheet.archivedEvents.push(newEvent);
-	        } else { 
+	        } else {
 	            newEventsSheet.upcomingEvents.push(newEvent);
 	        }
 	    }
+
+	    if (newEventsSheet.thisWeekEvents.length > 3) {
+	        newEventsSheet.nextThreeEvents = thisWeekEvents.slice(0, 3)
+	    } else {
+	        newEventsSheet.nextThreeEvents = newEventsSheet.thisWeekEvents.concat(newEventsSheet.upcomingEvents.slice(0, 3 - newEventsSheet.thisWeekEvents.length));
+	    }
+
 	    return newEventsSheet;
 	}
 
@@ -111,10 +128,10 @@
 	    for (let eventType of staticCopy.eventTypes) {
 	        if (evt.type == eventType.slug) { evt.meta = eventType; }
 
-	        if (evt.customEmoji) { 
-	            evt.emoji = evt.customEmoji; 
+	        if (evt.customEmoji) {
+	            evt.emoji = evt.customEmoji;
 	        } else if (evt.meta && evt.meta.emoji) {
-	            evt.emoji = evt.meta.emoji; 
+	            evt.emoji = evt.meta.emoji;
 	        } else {
 	            evt.emoji = "&#x1f5d3;";
 	        }
@@ -125,13 +142,22 @@
 	        if (evt.buttonLink) {
 	            if (evt.customButtonText) {
 	                evt.buttonText = evt.customButtonText;
-	            } else if (evt.meta.buttonText) { 
-	                evt.buttonText = evt.meta.buttonText; 
-	            } else { 
+	            } else if (evt.meta.buttonText) {
+	                evt.buttonText = evt.meta.buttonText;
+	            } else {
 	                evt.buttonText = "Learn more";
 	            }
 	        }
 	    }
+	}
+
+	function slugifyEvent(evt) {
+	    // TODO: THIS FUNCTION DOESN'T REALLY work
+	    // See this for guidance: https://gist.github.com/onyxfish/db112abb8c1d8a5018e5
+	    value = evt.name.toLowerCase();
+	    value = value.replace(/[^\w\s-]/g, '');
+	    value = value.replace(/\s+/g, '-');
+	    return value;
 	}
 
 	function processEventDateTime(evt) {
@@ -158,11 +184,11 @@
 	        archiveListDOM.style.display = "block";
 	    });
 
-	    showLightningTalksListButton = document.querySelector('#show-ligtning-talks-btn');
-	    lightningTalksListDOM = document.querySelector('#lightning-talks-list');
-	    showLightningTalksListButton.addEventListener('click', function() {
-	        lightningTalksListDOM.style.display = "block";
-	    });
+	    // showLightningTalksListButton = document.querySelector('#show-ligtning-talks-btn');
+	    // lightningTalksListDOM = document.querySelector('#lightning-talks-list');
+	    // showLightningTalksListButton.addEventListener('click', function() {
+	    //     lightningTalksListDOM.style.display = "block";
+	    // });
 	}
 
 
@@ -32986,34 +33012,11 @@
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var stack1;
 
-	  return "<h3>This Week at Knight Lab</h3>\n"
-	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.thisWeekEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n";
-	},"2":function(container,depth0,helpers,partials,data) {
-	    var stack1;
-
-	  return ((stack1 = container.invokePartial(__webpack_require__(139),depth0,{"name":"event","data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
-	},"4":function(container,depth0,helpers,partials,data) {
-	    var stack1;
-
-	  return "<h3>The Future</h3>\n"
-	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.upcomingEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n";
-	},"6":function(container,depth0,helpers,partials,data) {
-	    var stack1;
-
-	  return "<div class=\"archives\">\n    <div id=\"show-archives-btn\" class=\"button button-complement button-full-width\">View Archived Events</div>\n    <div id=\"archives-list\">\n        <h3>The Past</h3>\n        "
-	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.archivedEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n    </div>\n</div>\n";
+	  return ((stack1 = container.invokePartial(__webpack_require__(139),depth0,{"name":"event-small","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
 	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-	    var stack1, alias1=depth0 != null ? depth0 : {};
+	    var stack1;
 
-	  return "\n"
-	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.thisWeekEvents : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n<p class=\"time-meta\"><small class=\"text-color-grey--light text-fontFamily-sansSerif\">All event times are in Central Time</small><p>\n\n"
-	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.upcomingEvents : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-	    + "\n\n"
-	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.archivedEvents : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+	  return ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.nextThreeEvents : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
 	},"usePartial":true,"useData":true});
 
 /***/ },
@@ -34200,6 +34203,84 @@
 	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
 	    var stack1, helper;
 
+	  return "<h6 class=\"strong emoji\"><span>"
+	    + ((stack1 = ((helper = (helper = helpers.emoji || (depth0 != null ? depth0.emoji : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"emoji","hash":{},"data":data}) : helper))) != null ? stack1 : "")
+	    + "</span></h6>";
+	},"3":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+
+	  return container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.meta : depth0)) != null ? stack1.type : stack1), depth0))
+	    + ": ";
+	},"5":function(container,depth0,helpers,partials,data) {
+	    var helper;
+
+	  return " | "
+	    + container.escapeExpression(((helper = (helper = helpers.location || (depth0 != null ? depth0.location : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"location","hash":{},"data":data}) : helper)));
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+	  return "<a href=\"#"
+	    + alias4(((helper = (helper = helpers.slug || (depth0 != null ? depth0.slug : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"slug","hash":{},"data":data}) : helper)))
+	    + "\" class=\"event event-small\">\n        "
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.emoji : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n        <div class=\"info text-fontFamily-sansSerif\">\n            <h6>"
+	    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.meta : depth0)) != null ? stack1.type : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "<span>"
+	    + alias4(((helper = (helper = helpers.name || (depth0 != null ? depth0.name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"name","hash":{},"data":data}) : helper)))
+	    + "</span></strong></h6>\n            <p>"
+	    + alias4(((helper = (helper = helpers.datetimeString || (depth0 != null ? depth0.datetimeString : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datetimeString","hash":{},"data":data}) : helper)))
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.location : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "</p>\n        </div>\n    </a>\n</a>\n";
+	},"useData":true});
+
+/***/ },
+/* 140 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(120);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+
+	  return "<h3>This Week at Knight Lab</h3>\n"
+	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.thisWeekEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n";
+	},"2":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+
+	  return ((stack1 = container.invokePartial(__webpack_require__(141),depth0,{"name":"event-full","data":data,"helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "");
+	},"4":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+
+	  return "<h3>The Future</h3>\n"
+	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.upcomingEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n";
+	},"6":function(container,depth0,helpers,partials,data) {
+	    var stack1;
+
+	  return "<div class=\"archives\">\n    <div id=\"show-archives-btn\" class=\"button button-complement button-full-width\">View Archived Events</div>\n    <div id=\"archives-list\">\n        <h3>The Past</h3>\n        "
+	    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.archivedEvents : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n    </div>\n</div>\n";
+	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+	    var stack1, alias1=depth0 != null ? depth0 : {};
+
+	  return "\n"
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.thisWeekEvents : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n<p class=\"time-meta\"><small class=\"text-color-grey--light text-fontFamily-sansSerif\">All event times are in Central Time</small><p>\n\n"
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.upcomingEvents : depth0),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+	    + "\n\n"
+	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.archivedEvents : depth0),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+	},"usePartial":true,"useData":true});
+
+/***/ },
+/* 141 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Handlebars = __webpack_require__(120);
+	function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
+	module.exports = (Handlebars["default"] || Handlebars).template({"1":function(container,depth0,helpers,partials,data) {
+	    var stack1, helper;
+
 	  return "<h5 class=\"emoji\"><span>"
 	    + ((stack1 = ((helper = (helper = helpers.emoji || (depth0 != null ? depth0.emoji : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"emoji","hash":{},"data":data}) : helper))) != null ? stack1 : "")
 	    + "</span></h5>";
@@ -34224,7 +34305,9 @@
 	},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
 	    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-	  return "<div class=\"event\">\n    "
+	  return "<div class=\"event event-full\" id=\""
+	    + alias4(((helper = (helper = helpers.slug || (depth0 != null ? depth0.slug : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"slug","hash":{},"data":data}) : helper)))
+	    + "\">\n    "
 	    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.emoji : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
 	    + "\n    <div class=\"info\">\n        <h5> "
 	    + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.meta : depth0)) != null ? stack1.type : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -34241,7 +34324,7 @@
 	},"useData":true});
 
 /***/ },
-/* 140 */
+/* 142 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Handlebars = __webpack_require__(120);
@@ -34267,7 +34350,7 @@
 	},"useData":true});
 
 /***/ },
-/* 141 */
+/* 143 */
 /***/ function(module, exports) {
 
 	module.exports = {
