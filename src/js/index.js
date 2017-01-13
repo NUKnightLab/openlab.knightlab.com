@@ -87,12 +87,10 @@ function attatchEventMetadata(evt) {
         if (!evt.time && evt.meta.time) { evt.time = evt.meta.time; }
 
         if (evt.buttonLink) {
-            if (evt.customButtonText) {
-                evt.buttonText = evt.customButtonText;
+            if (!evt.buttonText) {
+                evt.buttonText = "Learn more";
             } else if (evt.meta.buttonText) {
                 evt.buttonText = evt.meta.buttonText;
-            } else {
-                evt.buttonText = "Learn more";
             }
         }
     }
