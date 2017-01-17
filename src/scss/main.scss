@@ -1,5 +1,7 @@
 $spacing-gutter: 2rem;
-@import '../../../orangeline/src/scss/orangeline';
+
+//Taken from Orangeline SCSS
+$border-radius: 8px !default;
 
 .rounded {
     border-radius: $border-radius;
