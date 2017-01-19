@@ -7,7 +7,7 @@
             "time": "6:00 pm - 10:00 pm",
             "location": "Fisk 111",
             "description": "Come build cool projects, ask questions and learn new things from each other. We have short presentations by students on topics they find interesting and fun activities and workshops to learn new skills in a collaborative setting. We also have free pizza and wings, so drop by for however long you can!",
-            "emoji": "🛠"
+            "emoji": "&#x1F4BB"
         },
         {
             "type": "Lab Lunch",
@@ -16,7 +16,7 @@
             "time": "11:30 am - 1:00 pm",
             "location": "Fisk 111",
             "description": "Every week we invite a guest speaker from the worlds of storytelling and information to have a conversation about what they do and what fascinates them about their field. Lunch is catered, so come ready with questions to ask!",
-            "emoji": "🍪",
+            "emoji": "&#x1F36A",
             "buttonText": "RSVP"
         },
         {
@@ -26,7 +26,7 @@
             "time": "12:30 pm - 1:30 pm",
             "location": "Fisk 109",
             "description": "On Wednesdays, we set aside some time to watch a conference or lecture video and have a group discussion about it. It's a great way to learn new things from places you may not know otherwise.",
-            "emoji": "📺"
+            "emoji": "&#x1F4FA"
         }
     ]
 }
