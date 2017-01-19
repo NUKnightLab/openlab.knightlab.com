@@ -20,7 +20,7 @@
             "buttonText": "RSVP"
         },
         {
-            "type": "LunchConf",
+            "type": "LunchConference",
             "slug": "lunch-conf",
             "day": "Wednesday",
             "time": "12:30 pm - 1:30 pm",
