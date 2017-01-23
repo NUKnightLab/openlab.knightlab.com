@@ -72,7 +72,9 @@ function processEventsSheet(sheet) {
 
 function attatchEventMetadata(evt) {
     evt.meta = false;
-    for (let eventType of staticCopy.eventTypes) {
+    for (var i = 0; i < staticCopy.eventTypes.length; i++) {
+        var eventType = staticCopy.eventTypes[i];
+        
         if (evt.type == eventType.slug) { evt.meta = eventType; }
 
         if (evt.customEmoji) {
