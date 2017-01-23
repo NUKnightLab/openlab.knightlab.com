@@ -67,7 +67,26 @@ function processEventsSheet(sheet) {
         newEventsSheet.nextThreeEvents = newEventsSheet.thisWeekEvents.concat(newEventsSheet.upcomingEvents.slice(0, 3 - newEventsSheet.thisWeekEvents.length));
     }
 
+    newEventsSheet.nextThreeEvents = dateSort(1, newEventsSheet.nextThreeEvents);
+    newEventsSheet.thisWeekEvents = dateSort(1, newEventsSheet.thisWeekEvents);
+    newEventsSheet.archivedEvents = dateSort(-1, newEventsSheet.archivedEvents);
+
     return newEventsSheet;
+}
+
+//order = 1 for chronological
+//order = -1 for reverse chronological
+function dateSort(order, arr) {
+    var sorted = arr.sort(function(a, b) {
+        if (order == 1) {
+            return new Date(a.date) - new Date(b.date);
+        }
+        else {
+            return new Date(b.date) - new Date(a.date);
+        }
+    });
+
+    return sorted;
 }
 
 function attatchEventMetadata(evt) {
