@@ -116,7 +116,7 @@ function processEventDateTime(evt) {
 function createEventDateTimeString(evt) {
     var str = '';
     if (evt.thisWeek) {
-        str = evt.moment.format('dddd');
+        str = evt.moment.format('dddd, MMMM D');
     } else {
         str = evt.moment.format('MMMM D');
     }
