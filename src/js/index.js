@@ -37,12 +37,10 @@ function updateDOM() {
     upcomingEventsPanelDOM.innerHTML = upcomingEventsPanelTemplate(copy.events);
     eventsListFullDOM.innerHTML = eventsListFullTemplate(copy.events);
     console.timeEnd("render");
-    // lightningTalksArchiveDOM.innerHTML = lightningTalksTemplate(copy["lightning-talks-archive"]);
-    enableButtons();
 }
 
 function processEventsSheet(sheet) {
-    newEventsSheet = {thisWeekEvents: [], upcomingEvents: [], archivedEvents: [], nextThreeEvents: []};
+    newEventsSheet = {thisWeekEvents: [], upcomingEvents: [], nextThreeEvents: []};
 
     for (var i = 0; i < sheet.length; i++) {
         var newEvent = sheet[i];
@@ -54,8 +52,6 @@ function processEventsSheet(sheet) {
 
         if (newEvent.thisWeek) {
             newEventsSheet.thisWeekEvents.push(newEvent);
-        } else if (newEvent.archived) {
-            newEventsSheet.archivedEvents.push(newEvent);
         } else {
             newEventsSheet.upcomingEvents.push(newEvent);
         }
@@ -69,7 +65,6 @@ function processEventsSheet(sheet) {
 
     newEventsSheet.nextThreeEvents = dateSort(1, newEventsSheet.nextThreeEvents);
     newEventsSheet.thisWeekEvents = dateSort(1, newEventsSheet.thisWeekEvents);
-    newEventsSheet.archivedEvents = dateSort(-1, newEventsSheet.archivedEvents);
 
     return newEventsSheet;
 }
@@ -129,7 +124,6 @@ function slugifyEvent(evt) {
 function processEventDateTime(evt) {
     evt.moment = moment(evt.date);
     evt.thisWeek = (evt.moment.isSameOrAfter(moment(), 'day') && evt.moment.isSameOrBefore(moment(), 'week'));
-    evt.archived = evt.moment.isBefore(moment(), 'day');
 }
 
 function createEventDateTimeString(evt) {
@@ -141,18 +135,4 @@ function createEventDateTimeString(evt) {
     }
     if (evt.time) { str += ", " + evt.time; }
     return str;
-}
-
-function enableButtons() {
-    showArchivesButton = document.querySelector('#show-archives-btn');
-    archiveListDOM = document.querySelector('#archives-list');
-    showArchivesButton.addEventListener('click', function() {
-        archiveListDOM.style.display = "block";
-    });
-
-    // showLightningTalksListButton = document.querySelector('#show-ligtning-talks-btn');
-    // lightningTalksListDOM = document.querySelector('#lightning-talks-list');
-    // showLightningTalksListButton.addEventListener('click', function() {
-    //     lightningTalksListDOM.style.display = "block";
-    // });
 }

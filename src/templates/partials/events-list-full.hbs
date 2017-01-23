@@ -10,14 +10,3 @@
 <h3>The Future</h3>
 {{#each upcomingEvents}}{{> event-full this}}{{/each}}
 {{/if}}
-
-
-{{#if archivedEvents}}
-<div class="archives">
-    <div id="show-archives-btn" class="button button-complement button-full-width">View Archived Events</div>
-    <div id="archives-list">
-        <h3>The Past</h3>
-        {{#each archivedEvents}}{{> event-full this}}{{/each}}
-    </div>
-</div>
-{{/if}}
