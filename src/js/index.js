@@ -44,8 +44,8 @@ function updateDOM() {
 function processEventsSheet(sheet) {
     newEventsSheet = {thisWeekEvents: [], upcomingEvents: [], archivedEvents: [], nextThreeEvents: []};
 
-    for (let event of sheet) {
-        var newEvent = event;
+    for (var i = 0; i < sheet.length; i++) {
+        var newEvent = sheet[i];
 
         attatchEventMetadata(newEvent);
         processEventDateTime(newEvent);
@@ -116,7 +116,9 @@ function createEventDateTimeString(evt) {
     if (evt.thisWeek) {
         str = evt.moment.format('dddd');
     } else {
-        str = evt.moment.format('MMMM M');
+        str = evt.moment.format('MMMM D');
+        console.log(evt)
+        console.log("Event String: " + str)
     }
     if (evt.time) { str += ", " + evt.time; }
     return str;
