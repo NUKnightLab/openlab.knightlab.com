@@ -74,7 +74,7 @@ function attatchEventMetadata(evt) {
     evt.meta = false;
     for (var i = 0; i < staticCopy.eventTypes.length; i++) {
         var eventType = staticCopy.eventTypes[i];
-        
+
         if (evt.type == eventType.slug) { evt.meta = eventType; }
 
         if (evt.customEmoji) {
@@ -119,8 +119,6 @@ function createEventDateTimeString(evt) {
         str = evt.moment.format('dddd');
     } else {
         str = evt.moment.format('MMMM D');
-        console.log(evt)
-        console.log("Event String: " + str)
     }
     if (evt.time) { str += ", " + evt.time; }
     return str;
