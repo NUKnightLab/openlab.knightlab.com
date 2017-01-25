@@ -34,7 +34,6 @@ function onLoad(data, tabletop) {
 
 function updateDOM() {
     console.time("render");
-    upcomingEventsPanelDOM.innerHTML = upcomingEventsPanelTemplate(copy.events);
     eventsListFullDOM.innerHTML = eventsListFullTemplate(copy.events);
     console.timeEnd("render");
 }
