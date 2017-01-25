@@ -52,7 +52,8 @@ function processEventsSheet(sheet) {
 
         if (newEvent.thisWeek) {
             newEventsSheet.thisWeekEvents.push(newEvent);
-        } else {
+        } else if (!newEvent.archived) {
+            console.log(newEvent);
             newEventsSheet.upcomingEvents.push(newEvent);
         }
     }
@@ -124,6 +125,7 @@ function slugifyEvent(evt) {
 function processEventDateTime(evt) {
     evt.moment = moment(evt.date);
     evt.thisWeek = (evt.moment.isSameOrAfter(moment(), 'day') && evt.moment.isSameOrBefore(moment(), 'week'));
+    evt.archived = evt.moment.isBefore(moment(), 'day');
 }
 
 function createEventDateTimeString(evt) {
