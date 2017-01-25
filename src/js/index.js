@@ -20,22 +20,16 @@ var copy = false;
 var staticCopy = require('json-loader!../data/static-copy.json');
 
 // Initialize the code by starting Tabletop
-console.time("tabletop");
 Tabletop.init({key: publicSpreadsheetURL, callback: onLoad});
 
 function onLoad(data, tabletop) {
-    console.timeEnd("tabletop");
-    console.time("process");
     copy = data;
     copy.events = processEventsSheet(data.events.elements);
-    console.timeEnd("process");
     updateDOM();
 }
 
 function updateDOM() {
-    console.time("render");
     eventsListFullDOM.innerHTML = eventsListFullTemplate(copy.events);
-    console.timeEnd("render");
 }
 
 function processEventsSheet(sheet) {
@@ -52,7 +46,6 @@ function processEventsSheet(sheet) {
         if (newEvent.thisWeek) {
             newEventsSheet.thisWeekEvents.push(newEvent);
         } else if (!newEvent.archived) {
-            console.log(newEvent);
             newEventsSheet.upcomingEvents.push(newEvent);
         }
     }
