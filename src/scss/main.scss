@@ -7,17 +7,9 @@ $border-radius: 8px !default;
     border-radius: $border-radius;
 }
 
-.container {
-    margin-top: 4em;
-}
-
-.button {
-    margin-left: 0 !important; margin-right: 0 !important;
-}
-
-p {
-    font-size: .875rem;
-}
+// .button {
+//     margin-left: 0 !important; margin-right: 0 !important;
+// }
 
 #upcoming-events h4 {
     margin-top: 0;
@@ -76,8 +68,4 @@ p {
 
 #lightning-talks-archive {
     #lightning-talks-list { display: none; }
-}
-
-.footer-knightlab {
-    margin-top: 10em;
 }
