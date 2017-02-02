@@ -58,6 +58,7 @@ function processEventsSheet(sheet) {
 
     newEventsSheet.nextThreeEvents = dateSort(1, newEventsSheet.nextThreeEvents);
     newEventsSheet.thisWeekEvents = dateSort(1, newEventsSheet.thisWeekEvents);
+    newEventsSheet.upcomingEvents = dateSort(1, newEventsSheet.upcomingEvents);
 
     return newEventsSheet;
 }
