@@ -37,7 +37,38 @@ function displayPeople(input) {
 		}
 }
 
+let currOpen = "";
 
+function openModal(id) {
+	var modalName;
+	for (let i=0; i<modals.length; i++) {
+		if (id == modals[i]) {
+			modalName = "m-" + modals[i];
+			currOpen = modals[i];
+			break;
+		}
+	}
+	var modal = document.getElementById(modalName);
+	modal.style.display = "block";
+}
+
+function closeModal(id) {
+	//use currOpen to figure out which modal to close
+  modalName = "m-" + currOpen;
+	var modal = document.getElementById(modalName);
+	modal.style.display = "none";
+}
+
+
+document.addEventListener('click', function (event) {
+		modalName = "m-" + currOpen;
+		var modal = document.getElementById(modalName);
+    // If the click happened inside the the container, bail
+    if (event.target == modal) {
+			modal.style.display = "none";
+		}
+
+}, false);
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
