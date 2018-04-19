@@ -1,12 +1,37 @@
-console.log('hello');
-var c = document.getElementById('people-code');
-var d = document.getElementById('people-design');
-var w = document.getElementById('people-write');
+const c = document.getElementById('people-code');
+const d = document.getElementById('people-design');
+const w = document.getElementById('people-write');
 var people = [c, d, w];
 var modals = ["c1", "c2", "c3", "d1", "d2", "d3", "w1", "w2", "w3"];
+let prevDisplay = [];
+
+window.onscroll = function() {
+	console.log(window.pageYOffset);
+	console.log(document.documentElement.scrollTop);
+	let s = document.getElementById("sub-menu");
+	console.log(s);
+	if (window.pageYOffset >= 409) {
+		s.classList.add("top-bar");
+		s.classList.remove("not-top");
+	}
+	if (window.pageYOffset < 409) {
+		s.classList.remove("top-bar");
+		s.classList.add("not-top");
+	}
+}
 
 function displayPeople(input) {
+	console.log(prevDisplay);
 		if (input == 'code') {
+			if (prevDisplay.length != 0) {
+				prevDisplay[0].classList.add("fadeOut");
+				prevDisplay.pop();
+			}
+			prevDisplay.push(c);
+			c.classList.add("fadeIn");
+			if (c.classList.contains("fadeOut")) {
+				c.classList.remove("fadeOut");
+			}
 			c.style.display = "flex";
 			c.style.flexWrap = "wrap";
 			w.style.display = "none";
@@ -16,16 +41,33 @@ function displayPeople(input) {
 			document.getElementById('write').style.color = 'white';
 		}
 		else if (input == 'design') {
-			 d.style.display = "flex";
-			 d.style.flexWrap = "wrap";
-			 c.style.display = "none";
-			 w.style.display = "none";
-			 document.getElementById('design').style.color = '#383838';
-			 document.getElementById('code').style.color = 'white';
-			 document.getElementById('write').style.color = 'white';
-			 //c.classList.remove('horizTranslate');
+			if (prevDisplay.length != 0) {
+				prevDisplay[0].classList.add("fadeOut");
+				prevDisplay.pop();
+			}
+			prevDisplay.push(d);
+			d.classList.add("fadeIn");
+			if (d.classList.contains("fadeOut")) {
+				d.classList.remove("fadeOut");
+			}
+			d.style.display = "flex";
+			d.style.flexWrap = "wrap";
+			c.style.display = "none";
+			w.style.display = "none";
+			document.getElementById('design').style.color = '#383838';
+			document.getElementById('code').style.color = 'white';
+			document.getElementById('write').style.color = 'white';
 		}
 		else if (input == 'write') {
+			if (prevDisplay.length != 0) {
+				prevDisplay[0].classList.add("fadeOut");
+				prevDisplay.pop();
+			}
+			prevDisplay.push(w);
+			if (w.classList.contains("fadeOut")) {
+				w.classList.remove("fadeOut");
+			}
+			w.classList.add("fadeIn");
 			w.style.display = "flex";
 			w.style.flexWrap = "wrap";
 			d.style.display = "none";
@@ -33,7 +75,6 @@ function displayPeople(input) {
 			document.getElementById('write').style.color = '#383838';
 			document.getElementById('code').style.color = 'white';
 			document.getElementById('design').style.color = 'white';
-			//c.classList.remove('horizTranslate');
 		}
 }
 
@@ -59,7 +100,6 @@ function closeModal(id) {
 	modal.style.display = "none";
 }
 
-
 document.addEventListener('click', function (event) {
 		modalName = "m-" + currOpen;
 		var modal = document.getElementById(modalName);
@@ -67,8 +107,114 @@ document.addEventListener('click', function (event) {
     if (event.target == modal) {
 			modal.style.display = "none";
 		}
-
 }, false);
+
+function scrollIt(destination, duration = 200, easing = 'linear', callback) {
+  const easings = {
+    linear(t) {
+      return t;
+    },
+    easeInQuad(t) {
+      return t * t;
+    },
+    easeOutQuad(t) {
+      return t * (2 - t);
+    },
+    easeInOutQuad(t) {
+      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    },
+    easeInCubic(t) {
+      return t * t * t;
+    },
+    easeOutCubic(t) {
+      return (--t) * t * t + 1;
+    },
+    easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    },
+    easeInQuart(t) {
+      return t * t * t * t;
+    },
+    easeOutQuart(t) {
+      return 1 - (--t) * t * t * t;
+    },
+    easeInOutQuart(t) {
+      return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * (--t) * t * t * t;
+    },
+    easeInQuint(t) {
+      return t * t * t * t * t;
+    },
+    easeOutQuint(t) {
+      return 1 + (--t) * t * t * t * t;
+    },
+    easeInOutQuint(t) {
+      return t < 0.5 ? 16 * t * t * t * t * t : 1 + 16 * (--t) * t * t * t * t;
+    }
+  };
+
+const start = window.pageYOffset;
+const startTime = 'now' in window.performance ? performance.now() : new Date().getTime();
+const documentHeight = Math.max(document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight);
+const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.getElementsByTagName('body')[0].clientHeight;
+const destinationOffset = typeof destination === 'number' ? destination : destination.offsetTop;
+const destinationOffsetToScroll = Math.round(documentHeight - destinationOffset < windowHeight ? documentHeight - windowHeight : destinationOffset);
+
+if ('requestAnimationFrame' in window === false) {
+	window.scroll(0, destinationOffsetToScroll);
+	if (callback) {
+		callback();
+	}
+	return;
+}
+
+function scroll() {
+	const now = 'now' in window.performance ? performance.now() : new Date().getTime();
+	const time = Math.min(1, ((now - startTime) / duration));
+	const timeFunction = easings[easing](time);
+	window.scroll(0, Math.ceil((timeFunction * (destinationOffsetToScroll - start)) + start));
+
+	if (window.pageYOffset === destinationOffsetToScroll) {
+		if (callback) {
+			callback();
+		}
+		return;
+	}
+
+	requestAnimationFrame(scroll);
+}
+
+scroll();
+}
+
+document.querySelector('#scroll1').addEventListener('click', () => {
+  scrollIt(
+    document.querySelector('#intro'),
+    300,
+    'easeOutQuad'
+  );
+});
+
+document.querySelector('#scroll2').addEventListener('click', () => {
+  scrollIt(
+    document.querySelector('#tutorials'),
+    300,
+    'easeOutQuad'
+  );
+});
+
+document.querySelector('#scroll3').addEventListener('click', () => {
+  scrollIt(
+    document.querySelector('#bios'),
+    300,
+    'easeOutQuad'
+  );
+});
+
+
+
+
+
+
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};

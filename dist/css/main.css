@@ -98,14 +98,6 @@
   flex-wrap: flex;
 }
 
-.navbar-subnav {
-  margin-top: -2rem;
-}
-
-.navbar-subnav:target { /* Currently not working */
-  transition:all 3s ease;
-}
-
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -174,4 +166,34 @@
   #people {
     margin-left: 20%;
   }
+}
+
+.fadeOut {
+    opacity: 0;
+    animation: fadeOut .5s ease-in 1 forwards;
+}
+
+.fadeIn {
+    opacity: 1;
+    animation: fadeIn .5s ease-in 1 forwards;
+}
+
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+}
+
+.not-top {
+  margin-top: -2rem;
+}
+
+.navbar-subnav {
+  z-index: 1;
+}
+
+.slider-space {
+  padding-top: 1rem;
 }
